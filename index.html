@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Stock Market - Jquery Project</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="Sublime project">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
+<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="styles/contact.css">
+<link rel="stylesheet" type="text/css" href="styles/contact_responsive.css">
+<script
+src="https://code.jquery.com/jquery-3.3.1.min.js"
+integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="super_container">
+
+	<!-- Header -->
+
+	<header class="header">
+		<div class="header_container">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="header_content d-flex flex-row align-items-center justify-content-start">
+							<div class="logo"><a href="#">Stock Market</a></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	<!-- Contact -->
+
+	<div class="contact">
+		<div class="container">
+			<div class="row">
+
+				<!-- Get in touch -->
+				<div class="col-lg-4 contact_col">
+					<div class="get_in_touch">
+						<div class="section_title">Search for a stock</div>
+						<div class="contact_form_container">
+							<form action="#" id="contact_form" class="contact_form">
+								<div class="row">
+									<div class="col-xl-6">
+										<!-- Name -->
+										<label for="contact_name">Stock Ticker</label>
+										<input type="text" id="ticker" class="contact_input" required="required">
+                    <p id="tickerdisplay"></p>
+									</div>
+								</div>
+								<button class="button contact_button" id="findstockbutton"><span>Search</span></button>
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<!-- Contact Info -->
+				<div class="col-lg-6 offset-xl-1 contact_col">
+					<div class="contact_info">
+						<div class="contact_info_section">
+							<div class="contact_info_title" id="tickername"></div>
+							<div id="stockdata">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer -->
+
+<script src="styles/bootstrap4/popper.js"></script>
+<script src="styles/bootstrap4/bootstrap.min.js"></script>
+<script src="plugins/greensock/TweenMax.min.js"></script>
+<script src="plugins/greensock/TimelineMax.min.js"></script>
+<script src="plugins/scrollmagic/ScrollMagic.min.js"></script>
+<script src="plugins/greensock/animation.gsap.min.js"></script>
+<script src="plugins/greensock/ScrollToPlugin.min.js"></script>
+<script src="plugins/easing/easing.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCIwF204lFZg1y4kPSIhKaHEXMLYxxuMhA"></script>
+<script src="js/contact.js"></script>
+
+
+<script>
+  $("#findstockbutton").click(function(e) {
+    var value = $("#ticker").val();
+    $("#tickerdisplay").text("Searching for " + value);
+    var myurl = "https://api.iextrading.com/1.0/stock/" + value + "/stats";
+    $.ajax({
+      url: myurl,
+      dataType: "json",
+      success: function(parsed_json) {
+        let everything = "<ul>";
+        everything += "<li> Company Name: \t\t" + parsed_json.companyName + "</li>";
+        everything += "<li> Beta: \t\t\t" + parsed_json.beta + "</li>";
+        everything += "<li> Dividend Yield: \t" + parsed_json.dividendYield + "</li>";
+        everything += "<li> Dividend Rate: \t" + parsed_json.dividendRate + "%</li>";
+        everything += "<li> Profit Margin: \t" + parsed_json.profitMargin + "</li>";
+        everything += "<li> Ex Dividend Date: \t" + parsed_json.exDividendDate + "</li>";
+        everything += "<li> Return on Assets: \t" + parsed_json.returnOnAssets + "</li>";
+        everything += "<li> Return on Equity: \t" + parsed_json.returnOnEquity + "</li>";
+        everything += "<li> Revenue per Share: \t" + parsed_json.revenuePerShare + "</li>";
+        everything += "<li> Latest EPS: \t" + parsed_json.latestEPS + "</li>";
+        everything += "<li> Market Cap: \t" + parsed_json.marketCap + "</li>";
+        everything += "<li> Price to Book: \t" + parsed_json.priceToBook + "</li>";
+        everything += "<li> Price to Sales: \t" + parsed_json.priceToSales + "</li>";
+        everything += "</ul>";
+        $("#stockdata").html(everything);
+        $("#tickername").html(value);
+      },
+      error: function(error) {
+        $("#stockdata").html("Stock not found");
+      }
+    });
+    event.preventDefault();
+  });
+</script>
+
+
+
+</body>
+</html>
